@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 
-import { OneBusDataService } from 'src/app/services/one-bus-data.service';
+import { AutobusesDataService } from 'src/app/services/autobuses-data.service';
+import { AutobusModel } from 'src/app/models/autobus.model';
 
 import * as mapboxgl from 'mapbox-gl';
 
@@ -14,49 +15,17 @@ export class OneBusComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapa') divMapa!: ElementRef;
   mapa!: mapboxgl.Map;
   zoomLevel: number = 15;
-  // center: [number, number] = [ -92.96116618663339, 17.9899306057385 ];
   center: [number, number] = [ -6.25365, 53.349731 ];
 
-  public data: any[] = [];
+  public dataAutobuses: AutobusModel[] = [];
 
   constructor(
-    private _oneBusDataService: OneBusDataService
+    private _autobusesDataService: AutobusesDataService
   ) { }
 
   ngAfterViewInit(): void {
 
-    this._oneBusDataService.getDataFromCsvFile().subscribe(
-      result => {
-        let csvToRowArray = result.split("\n");
-          // for (let index = 1; index < csvToRowArray.length - 1; index++) {
-        for (let index = 1; index < 10; index++) {
-          let row = csvToRowArray[index].split(",");
-          this.data.push(
-            {
-              dataEntryID: row[0],
-              date: row[1],
-              time: row[2],
-              latitude: row[3],
-              longitude: row[4],
-              vehicleID: row[5],
-            }
-          );
-        }
-
-        console.log('DATAAA -->', this.data);
-
-        for (let item of this.data) {
-          console.log('ITEM ---> ', item);
-          
-
-        }
-
-        // https://es.stackoverflow.com/questions/383466/imprimir-array-cada-tiempo-determinado
-      }
-    );
-
-    
-
+    this.getOneBusData();
 
     this.mapa = new mapboxgl.Map({
       container: this.divMapa.nativeElement,
@@ -64,8 +33,6 @@ export class OneBusComponent implements AfterViewInit, OnDestroy {
       center: this.center,
       zoom: this.zoomLevel
     });
-
-    // const marker = new mapboxgl.Marker().setLngLat(this.center).addTo(this.mapa);
 
     this.mapa.on('zoom', (event) => {
       this.zoomLevel = this.mapa.getZoom();
@@ -89,14 +56,43 @@ export class OneBusComponent implements AfterViewInit, OnDestroy {
       const { lng, lat } = target.getCenter();
       this.center = [ lng, lat ];
     });
-
-    this.setMarkers();
   }
 
-  setMarkers() {
-    for (let item of this.data) {
-      console.log('ITEM ---> ', item);
-    }
+  getOneBusData() {
+    this._autobusesDataService.getOneBusDataCsvFile().subscribe(
+      result => {
+        let csvToRowArray = result.split("\n");
+          // for (let index = 1; index < csvToRowArray.length - 1; index++) {
+        for (let index = 1; index < 20; index++) {
+          let row = csvToRowArray[index].split(",");
+          this.dataAutobuses.push(
+            {
+              dataEntryID: row[0],
+              date: row[1],
+              time: row[2],
+              latitude: row[3],
+              longitude: row[4],
+              vehicleID: row[5].replace("\r", ""),
+            }
+          );
+        }
+
+        this.dataAutobuses.forEach((element, index) => {
+          const longitudLatitud: mapboxgl.LngLatLike = [ element.longitude, element.latitude ];
+          const markerCar: HTMLElement = document.createElement('div');
+          markerCar.innerHTML = '<i class="fa-solid fa-car fs-3 text-primary"></i>';
+
+          setTimeout(() => {
+
+            const marker = new mapboxgl.Marker({element: markerCar}).setLngLat(longitudLatitud).addTo(this.mapa);
+
+            this.mapa.flyTo({
+              center: longitudLatitud
+            });
+          }, index * 3000);
+        });
+      }
+    );
   }
 
   zoomIn() {
