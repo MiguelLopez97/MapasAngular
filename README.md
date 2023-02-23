@@ -12,8 +12,8 @@ Las credenciales para el acceso al operador para que pueda visualizar los mapas 
 
 ## Primer Mapa: One Bus
 
-Para el primer mapa se visualizan todos los registros del archivo `one_bus.csv` y asimismo va realizando la transición de cada coordenada (latitud y longitud) mediante un icono de un coche.
+Para el primer mapa se visualizan todos los registros del archivo `one_bus.csv` y asimismo va realizando la transición de cada coordenada (latitud y longitud) mediante un icono de un coche. Cada posición del icono va cambiando cada 5 segundos (apliqué este intervalo de tiempo ya que se aprecia mejor la transición del cambio de posición).
 
 ## Segundo Mapa: Many Bus
 
-En el segundo mapa se realizó un filtrado por cada autobús, separando cada autobús en un arreglo respectivamente. En el mapa es posible ver los autobuses que se encuentran disponibles y elegir el que desee visualizar en el mapa. Al igual que en el primer mapa, realiza la transición de cada coordenada, mostrando el movimiento que tiene el autobús seleccionado.
+En el segundo mapa se realizó un filtrado por cada autobús, separando cada autobús en un arreglo respectivamente. En el mapa es posible ver los autobuses que se encuentran disponibles y elegir el que desee visualizar en el mapa. Al igual que en el primer mapa, realiza la transición de cada coordenada, mostrando el movimiento que tiene el autobús seleccionado. De igual manera que en el primer mapa, la posición del ícono va cambiando cada 5 segundos.
