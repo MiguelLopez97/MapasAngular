@@ -1,27 +1,19 @@
-# RetoAngular
+# Ejercicio en Angular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.7.
 
-## Development server
+## Pasos para clonar el proyecto
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+En una terminal o en el Git Bash escribir el siguiente comando `git clone https://github.com/MiguelLopez97/MapasAngular` para realizar la descarga de los archivos del proyecto. Una vez realizada la descarga, descargar los paquetes de Node con el siguiente comando `npm install` para reconstruir los paquetes que utiliza el proyecto. Una vez finalizado el paso anterior, correr el proyecto desde el directorio raíz del proyecto con el comando `ng serve` y navegar a `http://localhost:4200/`.
 
-## Code scaffolding
+## Login
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Las credenciales para el acceso al operador para que pueda visualizar los mapas son: Usuario `OPERADOR01` y Contraseña: `0p3r4d0r2023`. 
 
-## Build
+## Primer Mapa: One Bus
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Para el primer mapa se visualizan todos los registros del archivo `one_bus.csv` y asimismo va realizando la transición de cada coordenada (latitud y longitud) mediante un icono de un coche.
 
-## Running unit tests
+## Segundo Mapa: Many Bus
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+En el segundo mapa se realizó un filtrado por cada autobús, separando cada autobús en un arreglo respectivamente. En el mapa es posible ver los autobuses que se encuentran disponibles y elegir el que desee visualizar en el mapa. Al igual que en el primer mapa, realiza la transición de cada coordenada, mostrando el movimiento que tiene el autobús seleccionado.
