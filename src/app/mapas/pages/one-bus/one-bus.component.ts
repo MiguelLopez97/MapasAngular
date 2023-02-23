@@ -19,6 +19,8 @@ export class OneBusComponent implements AfterViewInit, OnDestroy {
 
   public dataAutobuses: AutobusModel[] = [];
 
+  public currentMarkers: mapboxgl.Marker[] = [];
+
   constructor(
     private _autobusesDataService: AutobusesDataService
   ) { }
@@ -62,8 +64,8 @@ export class OneBusComponent implements AfterViewInit, OnDestroy {
     this._autobusesDataService.getOneBusDataCsvFile().subscribe(
       result => {
         let csvToRowArray = result.split("\n");
-          // for (let index = 1; index < csvToRowArray.length - 1; index++) {
-        for (let index = 1; index < 20; index++) {
+        
+        for (let index = 1; index < csvToRowArray.length - 1; index++) {
           let row = csvToRowArray[index].split(",");
           this.dataAutobuses.push(
             {
@@ -76,15 +78,23 @@ export class OneBusComponent implements AfterViewInit, OnDestroy {
             }
           );
         }
-
+        
         this.dataAutobuses.forEach((element, index) => {
+
           const longitudLatitud: mapboxgl.LngLatLike = [ element.longitude, element.latitude ];
           const markerCar: HTMLElement = document.createElement('div');
           markerCar.innerHTML = '<i class="fa-solid fa-car fs-3 text-primary"></i>';
 
           setTimeout(() => {
-
             const marker = new mapboxgl.Marker({element: markerCar}).setLngLat(longitudLatitud).addTo(this.mapa);
+
+            //Guardamos los marcadores temporales en el arreglo 'currentMarkers'
+            this.currentMarkers.push(marker);
+
+            if (this.currentMarkers.length > 1) {
+              //Remueve el marker anterior
+              this.currentMarkers[index - 1].remove();
+            }            
 
             this.mapa.flyTo({
               center: longitudLatitud

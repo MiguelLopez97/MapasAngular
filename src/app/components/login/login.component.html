@@ -1,4 +1,3 @@
-<!--Login Page Starts-->
 <section id="login">
   <div class="row auth-height full-height-vh m-0">
     <div class="col-12 d-flex align-items-center justify-content-center">
@@ -11,16 +10,18 @@
               </div>
               <div class="col-lg-6 col-12 px-4 py-3">
                 <h4 class="card-title mb-4 text-center">Iniciar sesión</h4>
-                  <form >
+                  <form [formGroup]="loginForm" (ngSubmit)="iniciarSesion()">
                     <input type="text" 
                             class="form-control mb-3" 
-                            placeholder="Correo electrónico" 
+                            placeholder="Usuario" 
+                            formControlName="usuario"
                             name="correo"
                             autofocus
                             required>
                     <input type="password" 
                             class="form-control mb-3" 
                             placeholder="Contraseña" 
+                            formControlName="contrasenia"
                             name="contrasenia"
                             required>
                     <div class="d-flex justify-content-between mt-4">
@@ -36,4 +37,3 @@
     </div>
   </div>
 </section>
-<!--Login Page Ends-->

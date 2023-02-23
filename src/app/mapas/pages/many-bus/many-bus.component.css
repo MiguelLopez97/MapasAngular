@@ -8,3 +8,14 @@
 .list-group-item {
     cursor: pointer;
 }
+
+.row {
+    background-color: white;
+    border-radius: 5px;
+    bottom: 50px;
+    left: 50px;
+    padding: 10px;
+    position: fixed;
+    width: 320px;
+    z-index: 999;
+}

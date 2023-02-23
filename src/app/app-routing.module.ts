@@ -5,7 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 const routes: Routes = [
   { path: 'mapas', loadChildren: () => import('./mapas/mapas.module').then(m => m.MapasModule) },
   { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: 'mapas' }
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({

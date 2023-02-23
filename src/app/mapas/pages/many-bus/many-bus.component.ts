@@ -34,8 +34,7 @@ export class ManyBusComponent implements AfterViewInit, OnDestroy {
   ];
 
   public currentMarkers: mapboxgl.Marker[] = [];
-
-  public currentTimeout!: any;
+  public currentTimesOut: any[] = [];
 
   constructor(
     private _autobusesDataService: AutobusesDataService
@@ -101,12 +100,11 @@ export class ManyBusComponent implements AfterViewInit, OnDestroy {
         this.autobus38065 = this.dataAutobuses.filter(autobus => autobus.vehicleID == '38065');
         this.autobus33485 = this.dataAutobuses.filter(autobus => autobus.vehicleID == '33485');
 
-        this.autobuses[0].array = this.autobus43073
-        this.autobuses[1].array = this.autobus38087
-        this.autobuses[2].array = this.autobus40037
-        this.autobuses[3].array = this.autobus38065
-        this.autobuses[4].array = this.autobus33485
-        
+        this.autobuses[0].array = this.autobus43073;
+        this.autobuses[1].array = this.autobus38087;
+        this.autobuses[2].array = this.autobus40037;
+        this.autobuses[3].array = this.autobus38065;
+        this.autobuses[4].array = this.autobus33485;       
       }
     );
   }
@@ -114,7 +112,6 @@ export class ManyBusComponent implements AfterViewInit, OnDestroy {
   setAutobusOnMap(array: AutobusModel[], classColor: string) {
 
     this.deleteCurrentMarkers();
-    // clearTimeout(this.currentTimeout);
     
     array.forEach((element, index) => {
 
@@ -122,36 +119,42 @@ export class ManyBusComponent implements AfterViewInit, OnDestroy {
       const markerCar: HTMLElement = document.createElement('div');
       markerCar.innerHTML = `<i class="fa-solid fa-car fs-3 text-${classColor}"></i>`;
 
-      this.currentTimeout = setTimeout(() => {
+      this.currentTimesOut.push( 
+        setTimeout(() => {
+          const marker = new mapboxgl.Marker({element: markerCar}).setLngLat(longitudLatitud).addTo(this.mapa);
 
-        const marker = new mapboxgl.Marker({element: markerCar}).setLngLat(longitudLatitud).addTo(this.mapa);
+          //Guardamos los marcadores temporales en el arreglo 'currentMarkers'
+          this.currentMarkers.push(marker);
 
-        //Guardamos los marcadores temporales en el arreglo 'currentMarkers'
-        this.currentMarkers.push(marker);
+          if (this.currentMarkers != undefined && this.currentMarkers.length > 1) {
+            //Remueve el marker anterior
+            this.currentMarkers[index - 1].remove();
+          }
 
-        this.mapa.flyTo({
-          center: longitudLatitud
-        });
-      }, index * 3000);
-
-      //TODO: Detener el setTimeOut cuando se seleccione otro autobus
-      //https://stackoverflow.com/questions/25311892/cleartimeout-for-settimeout-in-for-loop
+          //Posiciona el mapa en las coordenadas dadas
+          this.mapa.flyTo({
+            center: longitudLatitud
+          });
+        }, index * 3000)
+      );
     });
-
-    
-
   }
 
   deleteCurrentMarkers() {
-    //Eliminar markers 
+    //Elimina markers 
     if (this.currentMarkers.length!==null) {
       for (let i = this.currentMarkers.length - 1; i >= 0; i--) {
         this.currentMarkers[i].remove();
       }
-    }
-  }
 
-  
+      this.currentMarkers = [];
+    }
+
+    //Elimina setTimeOut que hayan quedado en curso
+    this.currentTimesOut.forEach(element => {
+      clearTimeout(element);
+    });
+  } 
 
   zoomIn() {
     this.mapa.zoomIn();

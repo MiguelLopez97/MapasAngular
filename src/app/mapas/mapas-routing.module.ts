@@ -9,8 +9,9 @@ const routes: Routes = [
     children: [
       { path: 'one_bus', component: OneBusComponent },
       { path: 'many_bus', component: ManyBusComponent },
+      // { path: '**', redirectTo: 'one_bus' },
     ]
-  }
+  },
 ];
 
 @NgModule({
